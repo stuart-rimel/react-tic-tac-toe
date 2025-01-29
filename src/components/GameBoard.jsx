@@ -5,30 +5,15 @@ const initialGameBoard = [
 ];
 
 export default function GameBoard({ turns, onSelectSquare }) {
-  // derived state
   let gameBoard = initialGameBoard;
 
+  // derived state from turns into gameBoard
   for (const turn of turns) {
     const { square, player } = turn;
     const { row, col } = square;
 
     gameBoard[row][col] = player;
   }
-
-  // Lift gameboard state management to app component
-  //   const [gameBoard, setGameBoard] = useState(initialGameBoard);
-
-  //   function handleSelectSquare(rowIndex, colIndex) {
-  //     setGameBoard((prevGameBoard) => {
-  //       const updatedBoard = [
-  //         ...prevGameBoard.map((innerArray) => [...innerArray]),
-  //       ];
-  //       updatedBoard[rowIndex][colIndex] = activePlayer;
-  //       return updatedBoard;
-  //     });
-
-  //     onSelectSquare();
-  //   }
 
   return (
     <ol id="game-board">
