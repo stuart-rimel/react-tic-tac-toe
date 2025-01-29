@@ -5,6 +5,7 @@ const initialGameBoard = [
 ];
 
 export default function GameBoard({ turns, onSelectSquare }) {
+  // derived state
   let gameBoard = initialGameBoard;
 
   for (const turn of turns) {
