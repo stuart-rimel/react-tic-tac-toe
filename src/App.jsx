@@ -26,6 +26,11 @@ function deriveActivePlayer(gameTurns) {
 function App() {
   const [gameTurns, setGameTurns] = useState([]);
 
+  const [playerNames, setPlayerNames] = useState({
+    X: "Player 1",
+    O: "Player 2",
+  });
+
   const activePlayer = deriveActivePlayer(gameTurns);
 
   // Overlooked bug, this needs to be a deep copy
@@ -56,7 +61,7 @@ function App() {
       firstSquareSymbol === secondSquareSymbol &&
       firstSquareSymbol === thirdSquareSymbol
     ) {
-      winner = firstSquareSymbol;
+      winner = playerNames[firstSquareSymbol];
     }
   }
 
@@ -79,6 +84,15 @@ function App() {
     setGameTurns([]);
   }
 
+  function handlePlayerNameChange(symbol, newName) {
+    setPlayerNames((prevPlayers) => {
+      return {
+        ...prevPlayers,
+        [symbol]: newName,
+      };
+    });
+  }
+
   return (
     <main>
       <div id="game-container">
@@ -87,11 +101,13 @@ function App() {
             initialName="Player 1"
             symbol="X"
             isActive={activePlayer === "X" ? true : false}
+            onChangeName={handlePlayerNameChange}
           />
           <Player
             initialName="Player 2"
             symbol="O"
             isActive={activePlayer === "O" ? true : false}
+            onChangeName={handlePlayerNameChange}
           />
         </ol>
         {(winner || hasDraw) && (

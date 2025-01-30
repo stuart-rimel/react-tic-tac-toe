@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-export default function Player({ initialName, symbol, isActive }) {
+export default function Player({
+  initialName,
+  symbol,
+  isActive,
+  onChangeName,
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const [playerName, setNewName] = useState(initialName);
 
@@ -20,6 +25,9 @@ export default function Player({ initialName, symbol, isActive }) {
   function handleEditClick() {
     // Arrow fn is preferred way to update value of state var
     setIsEditing((editing) => !editing);
+    if (isEditing) {
+      onChangeName(symbol, playerName);
+    }
   }
 
   return (
