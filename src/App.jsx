@@ -28,7 +28,10 @@ function App() {
 
   const activePlayer = deriveActivePlayer(gameTurns);
 
-  let gameBoard = initialGameBoard;
+  // Overlooked bug, this needs to be a deep copy
+  // before it was assigned by reference to initialGameBoard
+  // and was mutating the initialGameBoard
+  let gameBoard = [...initialGameBoard.map((arrayRow) => [...arrayRow])];
 
   // derived state from turns into gameBoard
   for (const turn of gameTurns) {
@@ -57,6 +60,8 @@ function App() {
     }
   }
 
+  const hasDraw = gameTurns.length === 9 && !winner;
+
   function handleSelectSquare(rowIndex, colIndex) {
     setGameTurns((prevTurns) => {
       const currentPlayer = deriveActivePlayer(prevTurns);
@@ -68,6 +73,10 @@ function App() {
 
       return updatedTurns;
     });
+  }
+
+  function handleRestart() {
+    setGameTurns([]);
   }
 
   return (
@@ -85,7 +94,9 @@ function App() {
             isActive={activePlayer === "O" ? true : false}
           />
         </ol>
-        {winner && <GameOver winner={winner} />}
+        {(winner || hasDraw) && (
+          <GameOver onRestart={handleRestart} winner={winner} />
+        )}
         <GameBoard board={gameBoard} onSelectSquare={handleSelectSquare} />
       </div>
       <Log turns={gameTurns} />
